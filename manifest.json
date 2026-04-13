@@ -3,82 +3,48 @@
   "version": 1,
 
   "agent": {
-    "name": "Useful Assistant",
-    "description": "A personal AI assistant that's actually helpful. Reads files, searches the web, manages memory, and gets things done without asking unnecessary questions.",
-    "vibe": "resourceful, opinionated, gets things done",
-    "emoji": "🧠"
+    "name": "Polygon Yield Optimizer",
+    "description": "An autonomous DeFi agent that discovers and deposits into the highest-yielding pools on Polygon. Uses Trails pool discovery to find the best APY across Aave v3 and Morpho vaults — no hardcoded addresses. Monitors positions every 6 hours and alerts you when better opportunities appear. One command to discover, one to deploy your capital.",
+    "vibe": "disciplined, precise, yield-hungry",
+    "emoji": "📈"
   },
 
   "template": {
-    "slug": "useful-assistant",
-    "category": "general",
-    "tags": ["assistant", "personal", "productivity", "general"],
-    "partnerName": "Pinata"
+    "slug": "polygon-yield-optimizer",
+    "category": "defi",
+    "tags": ["defi", "yield", "polygon", "aave", "morpho", "trails", "blockchain"],
+    "authorName": "Polygon",
+    "partnerName": "Polygon",
+    "partnerUrl": "https://polygon.technology",
+    "partnerLogoUrl": "https://polygon.technology/favicon.ico"
   },
 
-  "_docs": {
-    "_about": "This section documents all available manifest.json options. Remove this _docs block before submitting.",
-
-    "version": "Required. Always 1.",
-
-    "agent.name": "Display name for the agent (max 100 chars).",
-    "agent.description": "Agent personality or purpose (max 10,000 chars). Shown in the dashboard.",
-    "agent.vibe": "Short tagline (max 200 chars). Shown under the agent name.",
-    "agent.emoji": "Emoji icon for the agent (max 32 chars).",
-
-    "template.slug": "URL-friendly identifier (lowercase, hyphens only). Used in marketplace URLs.",
-    "template.category": "Template category (e.g. general, defi, content, social, devops).",
-    "template.tags": "Search tags, max 10. Help users discover your template.",
-    "template.partnerName": "Author or organization name.",
-    "template.partnerUrl": "Optional. Author website URL.",
-    "template.partnerLogoUrl": "Optional. Author logo URL.",
-
-    "model.primary": "Optional. Default model ID (e.g. 'anthropic/claude-sonnet-4-6'). If omitted, uses platform default.",
-
-    "secrets": "Array of secrets the agent needs. Values are stored encrypted, never in the manifest. Each secret has: name (env var name), description (human-readable), required (boolean, default true).",
-
-    "skills": "Array of skills to attach. Each has: cid (IPFS content ID), name (optional, human-readable). Max 20.",
-
-    "tasks": "Cron tasks that run on a schedule. Each has: name, prompt (sent to agent), schedule (cron expression), enabled (boolean). Max 20. Example schedule: '0 9 * * *' = 9am daily.",
-
-    "scripts.build": "Optional. Shell command that runs after git push (e.g. 'cd workspace/projects/myapp && npm install --include=dev'). Use it to install dependencies or compile assets.",
-    "scripts.start": "Optional. Shell command that runs on agent boot (e.g. 'cd workspace/projects/myapp && npx vite --host 0.0.0.0'). Use it to start a dev server, API, or any long-running process.",
-
-    "routes": "Port forwarding rules. Each has: port (1025-65535), path (URL prefix like '/app'), protected (boolean, default true = requires auth). Max 10. Pair with scripts.start to run a server and expose it. Your server must bind to 0.0.0.0 (not localhost). The gateway rewrites the path prefix before forwarding to your server, so set Vite's base to match the route path.",
-
-    "channels.telegram.enabled": "Enable Telegram channel.",
-    "channels.telegram.dmPolicy": "'pairing' (requires pairing code), 'open' (anyone can DM), or 'closed' (no DMs).",
-    "channels.telegram.allowFrom": "Array of Telegram user IDs allowed to message.",
-    "channels.discord.enabled": "Enable Discord channel.",
-    "channels.discord.dmPolicy": "'pairing', 'open', or 'closed'.",
-    "channels.slack.enabled": "Enable Slack channel."
+  "model": {
+    "primary": "anthropic/claude-sonnet-4-6"
   },
 
   "secrets": [
     {
-      "name": "MY_SECRET",
-      "description": "Example secret — any secret your agent might need to work",
+      "name": "SEQUENCE_PROJECT_ACCESS_KEY",
+      "description": "Sequence project access key used for smart contract wallet operations. Generated automatically during first-run setup (`polygon-agent setup`) — no manual configuration needed for new deployments. Only set this manually when migrating an existing setup or running in a headless environment.",
       "required": false
     }
   ],
 
   "scripts": {
-    "build": "cd ./workspace/projects/hello-test && npm install --include=dev",
-    "start": "cd ./workspace/projects/hello-test && npx vite --host 0.0.0.0 --port 5173"
+    "build": "npm install -g github:0xPolygon/polygon-agent-kit"
   },
-
-  "routes": [
-    {
-      "port": 5173,
-      "path": "/app",
-      "protected": false
-    }
-  ],
 
   "tasks": [
     {
-      "name": "daily-check",
-      "prompt": "Run your daily check-in routine",
+      "name": "yield-monitor",
+      "prompt": "Run a yield monitoring check. First run `polygon-agent balances` and note the current holdings. Then run `polygon-agent deposit --asset USDC --amount 1` (dry-run, no --broadcast) to discover the current best pool APY and TVL. Do the same for USDT if the user has USDT. Read workspace/memory/yield-state.json if it exists to compare to the last recorded APY. If a better opportunity (>1% APY difference) exists for a currently held asset, clearly alert the user with the current vs available APY, the protocol name, and the recommended action. Log the check to workspace/memory/YYYY-MM-DD.md using today's actual date.",
+      "schedule": "0 */6 * * *",
+      "enabled": true
+    },
+    {
+      "name": "daily-report",
+      "prompt": "Generate a daily DeFi portfolio snapshot. Run `polygon-agent balances` and present the results as a markdown table. Calculate estimated daily yield earned based on any recorded APY and deposited amounts from workspace/memory/yield-state.json. Summarize: total holdings, current yield positions, any pending rebalance recommendations. Update workspace/memory/YYYY-MM-DD.md (using today's actual date) with the snapshot. Keep it concise — one paragraph summary, one table.",
       "schedule": "0 9 * * *",
       "enabled": true
     }
