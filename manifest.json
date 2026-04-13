@@ -3,7 +3,7 @@
   "version": 1,
 
   "agent": {
-    "name": "Polygon Yield Optimizer",
+    "name": "Yield Optimizer",
     "description": "An autonomous DeFi agent that discovers and deposits into the highest-yielding pools on Polygon. Uses Trails pool discovery to find the best APY across Aave v3 and Morpho vaults — no hardcoded addresses. Monitors positions every 6 hours and alerts you when better opportunities appear. One command to discover, one to deploy your capital.",
     "vibe": "disciplined, precise, yield-hungry",
     "emoji": "📈"
@@ -13,7 +13,7 @@
     "slug": "polygon-yield-optimizer",
     "category": "defi",
     "tags": ["defi", "yield", "polygon", "aave", "morpho", "trails", "blockchain"],
-    "authorName": "James Lawton",
+    "authorName": "Polygon",
     "partnerName": "Polygon",
     "partnerUrl": "https://polygon.technology",
     "partnerLogoUrl": "https://polygon.technology/favicon.ico"
@@ -22,6 +22,11 @@
   "model": {
     "primary": "anthropic/claude-sonnet-4-6"
   },
+
+  "skills": [
+    { "clawhub_slug": "polygon-agent-cli", "name": "Polygon Agent CLI" },
+    { "clawhub_slug": "polygon-defi", "name": "Polygon DeFi" }
+  ],
 
   "secrets": [
     {
