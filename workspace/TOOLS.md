@@ -8,7 +8,7 @@ Everything you need to run the full yield optimization flow using the Polygon Ag
 polygon-agent <command>
 ```
 
-Installed via `npm install -g github:0xPolygon/polygon-agent-kit`. The `scripts.build` in manifest.json installs it automatically on agent boot.
+Installed via `npm install -g @polygonlabs/agent-cli`. The `scripts.build` in manifest.json installs it automatically on agent boot.
 
 **All write commands are dry-run by default. Add `--broadcast` to execute.**
 

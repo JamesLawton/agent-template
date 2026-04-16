@@ -32,7 +32,7 @@
   ],
 
   "scripts": {
-    "build": "npm install -g github:0xPolygon/polygon-agent-kit"
+    "build": "npm install -g @polygonlabs/agent-cli"
   },
 
   "tasks": [
