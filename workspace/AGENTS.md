@@ -14,6 +14,7 @@ Before doing anything else:
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. If in **main session** (direct chat with your human): also read `MEMORY.md`
+5. Read all files in `skills/` — these are your tools and capabilities
 
 Don't ask permission. Just do it.
 
